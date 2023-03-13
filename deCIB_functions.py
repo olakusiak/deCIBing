@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 """
 Constants
@@ -90,6 +91,9 @@ def make_flux_cut_list(cib_flux, nu_list):
     return cib_flux_list
 
 
+
+
+
 def cib_spectral_response(freqs, Tdust_CIB,beta_CIB ): #input frequency in GHz
     # from pyilc
     # CIB = modified blackbody here
@@ -132,3 +136,131 @@ def cib_spectral_response(freqs, Tdust_CIB,beta_CIB ): #input frequency in GHz
     resp = (nu/nu0_CIB)**(3.0+(beta_CIB)) * ((np.exp(X0_CIB) - 1.0) / (np.exp(X_CIB) - 1.0)) * (ItoDeltaT(np.asarray(nu_ghz).astype(float))/ItoDeltaT(nu0_CIB_ghz))
     #resp[np.where(nu_ghz == None)] = 0. #this case is appropriate for HI or other maps that contain no CMB-relevant signals (and also no CIB); they're assumed to be denoted by None in nu_ghz
     return resp
+
+def plotfunction(linear=False, **kwargs):
+    plt.figure(figsize=(10,6))
+    plt.title(r"", fontsize=30,  **kwargs )
+    plt.xlabel(r"$\ell$", size=30)
+    plt.yticks(fontsize=20)
+    plt.xticks(fontsize=20)
+    plt.grid(which='both',alpha=0.4)
+    plt.yscale("log")
+    plt.xscale("log")
+    if linear == True:
+        plt.yscale("linear")
+        plt.xscale("linear")
+
+"""
+CIB shot noise
+"""
+
+cib_sn = {
+'93':
+    {'93x93':0.10,
+     '93x100':0.12,
+     '93x143':0.34,
+     '93x145':0.36,
+     '93x217':1.22,
+     '93x225': 1.35,
+     '93x280':2.46,
+     '93x353':4.41,
+     '93x545':9.72,
+    },
+'100':
+    {'100x93':0.12,
+     '100x100': 0.15,
+     '100x143': 0.42,
+     '100x145':0.44,
+     '100x217': 1.50,
+     '100x225':1.66,
+     '100x280':3.02,
+     '100x353': 5.40,
+     '100x545':12,
+    },
+
+'143':
+    {
+     '143x93':0.34,
+     '143x100':0.42,
+     '143x143': 1.20,
+     '143x145':1.25,
+     '143x217':4.30,
+     '143x225': 4.75,
+     '143x280':8.54,
+     '143x353':15.00,
+     '143x545':35.00,
+    },
+'145':
+    {
+     '145x93': 0.36,
+     '145x100':0.44,
+     '145x143':1.25,
+     '145x145':1.31,
+     '145x217':4.49,
+     '145x225': 4.96,
+     '145x280': 8.92,
+     '145x353':15.69,
+        '145x545':36.58,
+    },
+'217':
+    {
+     '217x93':1.22,
+     '217x100':1.50,
+     '217x143': 4.30,
+     '217x145':4.49,
+     '217x217':16.00,
+     '217x225':17.75,
+     '217x280':32.59,
+     '217x353':59.00,
+    '217x545': 135.0,
+    },
+'225':
+    {
+     '225x93': 1.35,
+     '225x100':1.66,
+     '225x143': 4.75,
+     '225x145':4.96,
+     '225x217':17.75,
+     '225x225': 19.69,
+     '225x280':36.18,
+     '225x353':65.57 ,
+    '225x545':150.50,
+    },
+'280':
+    {
+     '280x93':2.46,
+     '280x100':3.02,
+     '280x143':8.54,
+     '280x145':8.92,
+     '280x217':32.59,
+     '280x225':36.18,
+     '280x280':66.85,
+     '280x353':122.05,
+    '280x545':286.25,
+    },
+'353':
+    {
+     '353x93':4.41,
+     '353x100':5.40,
+     '353x143': 15.00,
+     '353x145':15.69,
+     '353x217':59,
+     '353x225': 65.57,
+     '353x280':122.05,
+     '353x353':225.00,
+        '353x545':543.0,
+    },
+
+'545':
+    {
+     '545x93': 9.72,
+     '545x100': 12.00,
+     '545x143': 35.00,
+     '545x145': 36.58,
+     '545x217':135,
+     '545x225': 150.50,
+     '545x280':286.25,
+     '545x353': 543,
+     '545x545': 1454.00,
+    },
+}
